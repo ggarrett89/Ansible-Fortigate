@@ -37,7 +37,6 @@
         access_token: "{{ token_fortigate }}"
         vdom: "root"
         state: "present"
-        ssl_verify: False
         firewall_address:
           name: "example_address"  # Name of the address object
           type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
@@ -45,32 +44,32 @@
           comment: "Example IPv4 address"  # Optional description
     
 
-    # - name: Configure IPv4/IPv6 policies.
-    #   fortinet.fortios.fortios_firewall_policy:
-    #       vdom: "root"
-    #       state: "present"
-    #       access_token: "{{ token_fortigate }}"
-    #       firewall_policy:
-    #           policyid: 2
-    #           name: "Test Policy"
-    #           action: "accept"
-    #           srcintf:
-    #             - name: "port1"
-    #           dstintf:
-    #             - name: "port2"
-    #           srcaddr:
-    #             - name: "gmail.com"
-    #           dstaddr:
-    #             - name: "all"
-    #           service:
-    #             - name: "ALL"
-    #           schedule: "always"
-    #           logtraffic: "all"
-    #   register: firewall_policy
+    - name: Configure IPv4/IPv6 policies.
+      fortinet.fortios.fortios_firewall_policy:
+          vdom: "root"
+          state: "present"
+          access_token: "{{ token_fortigate }}"
+          firewall_policy:
+              policyid: 2
+              name: "Test Policy"
+              action: "accept"
+              srcintf:
+                - name: "port1"
+              dstintf:
+                - name: "port2"
+              srcaddr:
+                - name: "example_address"
+              dstaddr:
+                - name: "all"
+              service:
+                - name: "ALL"
+              schedule: "always"
+              logtraffic: "all"
+      register: firewall_policy
 
-    # - name: debug ipv4 policy 
-    #   debug: 
-    #     msg: "{{ firewall_policy }}"
+    - name: debug ipv4 policy 
+      debug: 
+        msg: "{{ firewall_policy }}"
 
   # tasks:
   #   - name: Add source address

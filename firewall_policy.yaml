@@ -29,11 +29,15 @@
 
   tasks:
 
+    - name: ping fortigate
+      command: ping -c 4 172.18.144.11
+      delegate_to: localhost
+
     - name: Configure IPv4/IPv6 policies.
       fortinet.fortios.fortios_firewall_policy:
           vdom: "root"
           state: "present"
-          access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+          access_token: "{{ token_fortigate }}"
           firewall_policy:
               policyid: 1
               name: "Test Policy"
@@ -55,7 +59,7 @@
   #   - name: Add source address
   #     fortinet.fortios.fortios_firewall_address:
   #       host: "{{ fortigate_host }}"
-  #       access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+  #       access_token: "{{ token_fortigate }}"
   #       vdom: "root"
   #       state: "present"
   #       firewall_address:
@@ -65,7 +69,7 @@
   #   - name: Add destination address
   #     fortinet.fortios.fortios_firewall_address:
   #       host: "{{ fortigate_host }}"
-  #       access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+  #       access_token: "{{ token_fortigate }}"
   #       vdom: "root"
   #       state: "present"
   #       firewall_address:
@@ -75,7 +79,7 @@
   #   - name: Add custom service
   #     fortinet.fortios.fortios_firewall_service_custom:
   #       host: "{{ fortigate_host }}"
-  #       access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+  #       access_token: "{{ token_fortigate }}"
   #       vdom: "root"
   #       state: "present"
   #       firewall_service_custom:
@@ -88,7 +92,7 @@
   #   - name: Create firewall policy
   #     fortinet.fortios.fortios_firewall_policy:
   #       host: "{{ fortigate_host }}"
-  #       access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+  #       access_token: "{{ token_fortigate }}"
   #       vdom: "root"
   #       state: "present"
   #       firewall_policy:

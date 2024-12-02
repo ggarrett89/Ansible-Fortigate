@@ -32,33 +32,44 @@
     # - name: ping fortigate
     #   command: ping -c 4 192.168.0.120
     #   delegate_to: localhost
+    - name: Add source address
+      fortinet.fortios.fortios_firewall_address:
+        access_token: "{{ token_fortigate }}"
+        vdom: "root"
+        state: "present"
+        firewall_address:
+          name: "example_address"  # Name of the address object
+          type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
+          subnet: "192.168.1.0/24"  # IPv4 subnet in CIDR notation
+          comment: "Example IPv4 address"  # Optional description
+    
 
-    - name: Configure IPv4/IPv6 policies.
-      fortinet.fortios.fortios_firewall_policy:
-          vdom: "root"
-          state: "present"
-          access_token: "{{ token_fortigate }}"
-          firewall_policy:
-              policyid: 2
-              name: "Test Policy"
-              action: "accept"
-              srcintf:
-                - name: "port1"
-              dstintf:
-                - name: "port2"
-              srcaddr:
-                - name: "gmail.com"
-              dstaddr:
-                - name: "all"
-              service:
-                - name: "ALL"
-              schedule: "always"
-              logtraffic: "all"
-      register: firewall_policy
+    # - name: Configure IPv4/IPv6 policies.
+    #   fortinet.fortios.fortios_firewall_policy:
+    #       vdom: "root"
+    #       state: "present"
+    #       access_token: "{{ token_fortigate }}"
+    #       firewall_policy:
+    #           policyid: 2
+    #           name: "Test Policy"
+    #           action: "accept"
+    #           srcintf:
+    #             - name: "port1"
+    #           dstintf:
+    #             - name: "port2"
+    #           srcaddr:
+    #             - name: "gmail.com"
+    #           dstaddr:
+    #             - name: "all"
+    #           service:
+    #             - name: "ALL"
+    #           schedule: "always"
+    #           logtraffic: "all"
+    #   register: firewall_policy
 
-    - name: debug ipv4 policy 
-      debug: 
-        msg: "{{ firewall_policy }}"
+    # - name: debug ipv4 policy 
+    #   debug: 
+    #     msg: "{{ firewall_policy }}"
 
   # tasks:
   #   - name: Add source address

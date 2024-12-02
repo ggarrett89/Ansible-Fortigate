@@ -36,7 +36,7 @@
       fortinet.fortios.fortios_firewall_address:
         access_token: "{{ token_fortigate }}"
         vdom: "root"
-        state: "present"
+        state: "absent"
         firewall_address:
           name: "example_address"  # Name of the address object
           type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
@@ -47,7 +47,7 @@
     - name: Configure IPv4/IPv6 policies.
       fortinet.fortios.fortios_firewall_policy:
           vdom: "root"
-          state: "present"
+          state: "absent"
           access_token: "{{ token_fortigate }}"
           firewall_policy:
               policyid: 10
@@ -75,12 +75,10 @@
       uri:
         url: "https://172.18.144.11/api/v2/cmdb/firewall/policy"
         method: GET
-        user: "admin"
-        password: "admin"
         headers:
-          Content-Type: "application/json"
+          Content-Type: "application/json" 
+          Authorization: "Bearer {{ token_fortigate }}"
         validate_certs: no  # Set to 'yes' if you have valid certificates
-        force_basic_auth: yes
         status_code: 200
       register: policy_response
       ignore_errors: true

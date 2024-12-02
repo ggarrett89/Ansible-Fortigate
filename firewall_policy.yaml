@@ -71,6 +71,25 @@
       debug: 
         msg: "{{ firewall_policy }}"
 
+    - name: Get all firewall policies via FortiGate REST API
+      uri:
+        url: "https://172.18.144.11/api/v2/cmdb/firewall/policy"
+        method: GET
+        user: "admin"
+        password: "admin"
+        headers:
+          Content-Type: "application/json"
+        validate_certs: no  # Set to 'yes' if you have valid certificates
+        force_basic_auth: yes
+        status_code: 200
+      register: policy_response
+      ignore_errors: true
+
+    - name: Display the policies retrieved from FortiGate
+      debug:
+        var: policy_response.json
+      ignore_errors: true
+
     # - name: Configure IPv4/IPv6 policies.
     #   fortinet.fortios.fortios_firewall_policy:
     #       vdom: "root"

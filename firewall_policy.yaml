@@ -76,6 +76,7 @@
         # force_basic_auth: true
         # user: admin
         # password: admin
+        follow_redirects: all
         return_content: yes
         validate_certs: no
       register: login_response

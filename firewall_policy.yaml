@@ -37,7 +37,6 @@
         access_token: "{{ token_fortigate }}"
         vdom: "root"
         state: "present"
-        ssl_verify: False
         firewall_address:
           name: "example_address"  # Name of the address object
           type: "ipmask"  # Address type (e.g., "ipmask" for subnet)

@@ -72,10 +72,10 @@
       ansible.builtin.uri:
         url: "https://192.168.0.120/logincheck"
         method: POST
-        # body: "username=admin&secretkey=admin"
-        force_basic_auth: true
-        user: "admin"
-        password: "admin"
+        body: "username=admin&secretkey=admin"
+        # force_basic_auth: true
+        # user: admin
+        # password: admin
         return_content: yes
         validate_certs: no
       register: login_response

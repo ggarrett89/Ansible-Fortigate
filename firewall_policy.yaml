@@ -54,6 +54,20 @@
     #       subnet: "192.168.1.0/24"  # IPv4 subnet in CIDR notation
     #       comment: "Example IPv4 address"  # Optional description
 
+    - name: Make API request to FortiGate
+      ansible.builtin.uri:
+        url: "https://{{ fortigate_host }}/api/v2/cmdb/firewall/address/example_address"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ token_fortigate }}"
+        validate_certs: no
+      register: api_response
+      ignore_errors: true
+
+    - name: Debug API response
+      ansible.builtin.debug:
+        var: api_response.json
+
     
 
     - name: Configure IPv4/IPv6 policies.

@@ -1,4 +1,6 @@
-  hosts: fortigates
+---
+- name: configure fortigate
+  hosts: Ansible-Fortigate
   gather_facts: no
   collections:
     - fortinet.fortios

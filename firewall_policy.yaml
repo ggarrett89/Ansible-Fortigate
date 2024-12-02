@@ -1,0 +1,106 @@
+  hosts: fortigates
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+  vars:
+    ansible_host: "192.168.1.1" # IP or Hostname of the FortiGate
+    ansible_user: "admin"       # Username for the FortiGate
+    ansible_password: "password" # Password for the FortiGate
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    ansible_network_os: fortinet.fortios.fortios
+
+
+    # fortigate_host: "{{ survey_fortigate_host }}" # User-provided in Tower Survey
+    # fortigate_user: "{{ survey_fortigate_user }}" # User-provided in Tower Survey
+    # fortigate_pass: "{{ survey_fortigate_pass }}" # User-provided in Tower Survey
+    # src_address_name: "Source_Address"
+    # dst_address_name: "Destination_Address"
+    # custom_service_name: "Custom_TCP_Service"
+    # policy_name: "Allow_Custom_Service"
+    # tcp_ports: "8080-8081"
+    # udp_ports: ""
+    # src_subnet: "192.168.10.0/24"
+    # dst_subnet: "10.0.1.0/24"
+    # src_interface: "port1"
+    # dst_interface: "port2"- name: Configure FortiGate policy
+
+  tasks:
+
+    - name: Configure IPv4/IPv6 policies.
+      fortinet.fortios.fortios_firewall_policy:
+          vdom: "root"
+          state: "present"
+          access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+          firewall_policy:
+              policyid: 1
+              name: "Test Policy"
+              action: "accept"
+              srcintf:
+                - name: "port1"
+              dstintf:
+                - name: "port2"
+              srcaddr:
+                - name: "all"
+              dstaddr:
+                - name: "all"
+              service:
+                - name: "ALL"
+              schedule: "always"
+              logtraffic: "all"
+
+  # tasks:
+  #   - name: Add source address
+  #     fortinet.fortios.fortios_firewall_address:
+  #       host: "{{ fortigate_host }}"
+  #       access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+  #       vdom: "root"
+  #       state: "present"
+  #       firewall_address:
+  #         name: "{{ src_address_name }}"
+  #         subnet: "{{ src_subnet }}"
+    
+  #   - name: Add destination address
+  #     fortinet.fortios.fortios_firewall_address:
+  #       host: "{{ fortigate_host }}"
+  #       access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+  #       vdom: "root"
+  #       state: "present"
+  #       firewall_address:
+  #         name: "{{ dst_address_name }}"
+  #         subnet: "{{ dst_subnet }}"
+    
+  #   - name: Add custom service
+  #     fortinet.fortios.fortios_firewall_service_custom:
+  #       host: "{{ fortigate_host }}"
+  #       access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+  #       vdom: "root"
+  #       state: "present"
+  #       firewall_service_custom:
+  #         name: "{{ custom_service_name }}"
+  #         protocol: "TCP/UDP/SCTP"
+  #         tcp_portrange: "{{ tcp_ports }}"
+  #         udp_portrange: "{{ udp_ports }}"
+  #         comment: "Custom service for specific port ranges"
+    
+  #   - name: Create firewall policy
+  #     fortinet.fortios.fortios_firewall_policy:
+  #       host: "{{ fortigate_host }}"
+  #       access_token: "80Hd5Gbz8rg7q1rs1ynx8sswHj8988"
+  #       vdom: "root"
+  #       state: "present"
+  #       firewall_policy:
+  #         name: "{{ policy_name }}"
+  #         srcintf:
+  #           - "{{ src_interface }}"
+  #         dstintf:
+  #           - "{{ dst_interface }}"
+  #         srcaddr:
+  #           - "{{ src_address_name }}"
+  #         dstaddr:
+  #           - "{{ dst_address_name }}"
+  #         service:
+  #           - "{{ custom_service_name }}"
+  #         action: "accept"
+  #         schedule: "always"
+  #         logtraffic: "all"

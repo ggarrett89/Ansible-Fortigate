@@ -62,7 +62,7 @@
           state: "present"
           access_token: "{{ token_fortigate }}"
           firewall_policy:
-              policyid: 10
+              # policyid: 10
               name: "Test Policy"
               action: "accept"
               srcintf:

@@ -76,6 +76,7 @@
         # force_basic_auth: true
         # user: admin
         # password: admin
+        follow_redirects: all
         return_content: yes
         validate_certs: no
       register: login_response
@@ -91,6 +92,7 @@
         headers:
           Cookie: "{{ session_cookie }}"
         validate_certs: no
+        return_content: yes
       register: api_response_user
 
     - name: Debug API response

@@ -86,14 +86,14 @@
           access_token: "{{ token_fortigate }}"
           firewall_policy:
               policyid: 10
-              name: "Test Policy"
+              name: "Test Policy Overwrite"
               action: "accept"
               srcintf:
                 - name: "port1"
               dstintf:
                 - name: "port2"
               srcaddr:
-                - name: "example_overwrite_address"
+                - name: "example_address"
               dstaddr:
                 - name: "all"
               service:
@@ -117,6 +117,22 @@
         status_code: 200
       register: policy_response
       ignore_errors: true
+
+    - name: Authenticate with FortiGate and get session cookie
+      uri:
+        url: "https://172.18.144.11/logincheck"
+        method: POST
+        headers:
+          Content-Type: "application/x-www-form-urlencoded"
+        body: "username=admin&secretkey=admin"
+        body_format: form-urlencoded
+        validate_certs: no
+      register: login_response
+
+    - name: Extract session cookie
+      set_fact:
+        session_cookie: "{{ login_response.cookies['APSCOOKIE_admin'] }}"
+
 
     - name: Display the policies retrieved from FortiGate
       debug:

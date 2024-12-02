@@ -83,7 +83,7 @@
 
     - name: Make authenticated API request using session cookie
       ansible.builtin.uri:
-        url: "https://192.168.0.120/api/v2/cmdb/firewall/address/example_address"
+        url: "https://192.168.0.120/api/v2/cmdb/firewall/address/"
         method: GET
         headers:
           Cookie: "{{ session_cookie }}"

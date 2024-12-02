@@ -86,14 +86,14 @@
           access_token: "{{ token_fortigate }}"
           firewall_policy:
               policyid: 10
-              name: "Test Policy"
+              name: "Test Policy Overwrite"
               action: "accept"
               srcintf:
                 - name: "port1"
               dstintf:
                 - name: "port2"
               srcaddr:
-                - name: "example_overwrite_address"
+                - name: "example_address"
               dstaddr:
                 - name: "all"
               service:

@@ -29,14 +29,14 @@
 
   tasks:
 
-    # - name: ping fortigate
-    #   command: ping -c 4 192.168.0.120
-    #   delegate_to: localhost
+    - name: ping fortigate
+      command: ping -c 4 192.168.0.120
+      delegate_to: localhost
     - name: Add source address
       fortinet.fortios.fortios_firewall_address:
         access_token: "{{ token_fortigate }}"
         vdom: "root"
-        state: "absent"
+        state: "present"
         firewall_address:
           name: "example_address"  # Name of the address object
           type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
@@ -47,7 +47,7 @@
     - name: Configure IPv4/IPv6 policies.
       fortinet.fortios.fortios_firewall_policy:
           vdom: "root"
-          state: "absent"
+          state: "present"
           access_token: "{{ token_fortigate }}"
           firewall_policy:
               policyid: 10

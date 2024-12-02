@@ -29,9 +29,9 @@
 
   tasks:
 
-    - name: ping fortigate
-      command: ping -c 4 172.18.144.11
-      delegate_to: localhost
+    # - name: ping fortigate
+    #   command: ping -c 4 192.168.0.120
+    #   delegate_to: localhost
 
     - name: Configure IPv4/IPv6 policies.
       fortinet.fortios.fortios_firewall_policy:
@@ -39,7 +39,7 @@
           state: "present"
           access_token: "{{ token_fortigate }}"
           firewall_policy:
-              policyid: 1
+              policyid: 0
               name: "Test Policy"
               action: "accept"
               srcintf:

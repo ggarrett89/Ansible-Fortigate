@@ -78,9 +78,9 @@
         user: "admin"
         password: "admin"
         headers:
-          Content-Type: "application/json"
+          Content-Type: "application/json" 
+          Authorization: "Bearer {{ token_fortigate }}"
         validate_certs: no  # Set to 'yes' if you have valid certificates
-        force_basic_auth: yes
         status_code: 200
       register: policy_response
       ignore_errors: true

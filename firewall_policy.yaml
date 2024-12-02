@@ -29,6 +29,7 @@
 
   tasks:
 
+<<<<<<< HEAD
     - name: ping fortigate
       command: ping -c 4 192.168.0.120
       delegate_to: localhost
@@ -42,6 +43,21 @@
           type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
           subnet: "192.168.1.0/24"  # IPv4 subnet in CIDR notation
           comment: "Example IPv4 address"  # Optional description
+=======
+    # - name: ping fortigate
+    #   command: ping -c 4 192.168.0.120
+    #   delegate_to: localhost
+    # - name: Add source address
+    #   fortinet.fortios.fortios_firewall_address:
+    #     access_token: "{{ token_fortigate }}"
+    #     vdom: "root"
+    #     state: "absent"
+    #     firewall_address:
+    #       name: "example_address"  # Name of the address object
+    #       type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
+    #       subnet: "192.168.1.0/24"  # IPv4 subnet in CIDR notation
+    #       comment: "Example IPv4 address"  # Optional description
+>>>>>>> origin/ansible-fortigate
     
 
     - name: Configure IPv4/IPv6 policies.

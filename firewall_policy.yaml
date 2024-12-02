@@ -54,6 +54,11 @@
                 - name: "ALL"
               schedule: "always"
               logtraffic: "all"
+      register: firewall_policy
+
+    - name: debug ipv4 policy 
+      debug: 
+        msg: "{{ firewall_policy }}"
 
   # tasks:
   #   - name: Add source address

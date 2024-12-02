@@ -4,13 +4,13 @@
   gather_facts: no
   collections:
     - fortinet.fortios
-  vars:
-    ansible_host: "192.168.1.1" # IP or Hostname of the FortiGate
-    ansible_user: "admin"       # Username for the FortiGate
-    ansible_password: "password" # Password for the FortiGate
-    ansible_httpapi_use_ssl: yes
-    ansible_httpapi_validate_certs: no
-    ansible_network_os: fortinet.fortios.fortios
+  # vars:
+    # ansible_host: "192.168.1.1" # IP or Hostname of the FortiGate
+    # ansible_user: "admin"       # Username for the FortiGate
+    # ansible_password: "password" # Password for the FortiGate
+    # ansible_httpapi_use_ssl: yes
+    # ansible_httpapi_validate_certs: no
+    # ansible_network_os: fortinet.fortios.fortios
 
 
     # fortigate_host: "{{ survey_fortigate_host }}" # User-provided in Tower Survey

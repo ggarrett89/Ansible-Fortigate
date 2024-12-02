@@ -68,7 +68,32 @@
       ansible.builtin.debug:
         var: api_response.json
 
-    
+    - name: Login to FortiGate to get session cookie
+      ansible.builtin.uri:
+        url: "https://192.168.0.120/logincheck"
+        method: POST
+        body: "username=admin&secretkey=admin"
+        return_content: yes
+        validate_certs: no
+      register: login_response
+
+    - name: Extract session cookie
+      set_fact:
+        session_cookie: "{{ login_response.cookies }}"
+
+    - name: Make authenticated API request using session cookie
+      ansible.builtin.uri:
+        url: "https://192.168.0.120/api/v2/cmdb/firewall/address/example_address"
+        method: GET
+        headers:
+          Cookie: "{{ session_cookie }}"
+        validate_certs: no
+      register: api_response_user
+
+    - name: Debug API response
+      ansible.builtin.debug:
+        var: api_response_user.json
+
 
     - name: Configure IPv4/IPv6 policies.
       fortinet.fortios.fortios_firewall_policy:

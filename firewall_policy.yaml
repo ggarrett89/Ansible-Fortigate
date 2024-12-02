@@ -50,7 +50,7 @@
           state: "present"
           access_token: "{{ token_fortigate }}"
           firewall_policy:
-              policyid: 2
+              policyid: "0"
               name: "Test Policy"
               action: "accept"
               srcintf:
@@ -70,6 +70,29 @@
     - name: debug ipv4 policy 
       debug: 
         msg: "{{ firewall_policy }}"
+
+    # - name: Configure IPv4/IPv6 policies.
+    #   fortinet.fortios.fortios_firewall_policy:
+    #       vdom: "root"
+    #       state: "present"
+    #       access_token: "{{ token_fortigate }}"
+    #       firewall_policy:
+    #           policyid: 3
+    #           name: "Policy_no_add"
+    #           action: "accept"
+    #           srcintf:
+    #             - name: "port1"
+    #           dstintf:
+    #             - name: "port2"
+    #           srcaddr:
+    #             - name: "192.168.100.1"
+    #           dstaddr:
+    #             - name: "all"
+    #           service:
+    #             - name: "ALL"
+    #           schedule: "always"
+    #           logtraffic: "all"
+    #   ignore_errors: true
 
   # tasks:
   #   - name: Add source address

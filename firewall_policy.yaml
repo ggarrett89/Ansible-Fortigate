@@ -36,10 +36,10 @@
     - name: Configure IPv4/IPv6 policies.
       fortinet.fortios.fortios_firewall_policy:
           vdom: "root"
-          state: "absent"
+          state: "present"
           access_token: "{{ token_fortigate }}"
           firewall_policy:
-              policyid: 0
+              policyid: 10
               name: "Test Policy"
               action: "accept"
               srcintf:

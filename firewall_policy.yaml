@@ -1,6 +1,6 @@
 ---
 - name: configure fortigate
-  hosts: localhost
+  hosts: fortigate
   gather_facts: no
   collections:
     - fortinet.fortios

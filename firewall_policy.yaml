@@ -39,7 +39,7 @@
           state: "present"
           access_token: "{{ token_fortigate }}"
           firewall_policy:
-              policyid: 1
+              policyid: 2
               name: "Test Policy"
               action: "accept"
               srcintf:
@@ -47,7 +47,7 @@
               dstintf:
                 - name: "port2"
               srcaddr:
-                - name: "all"
+                - name: "gmail.com"
               dstaddr:
                 - name: "all"
               service:

@@ -62,7 +62,7 @@
           state: "present"
           access_token: "{{ token_fortigate }}"
           firewall_policy:
-              policyid: 0
+              policyid: 10
               name: "Test Policy"
               action: "accept"
               srcintf:
@@ -79,6 +79,29 @@
               logtraffic: "all"
       register: firewall_policy
 
+    - name: Configure IPv4/IPv6 policies test overwrite.
+      fortinet.fortios.fortios_firewall_policy:
+          vdom: "root"
+          state: "present"
+          access_token: "{{ token_fortigate }}"
+          firewall_policy:
+              policyid: 10
+              name: "Test Policy"
+              action: "accept"
+              srcintf:
+                - name: "port1"
+              dstintf:
+                - name: "port2"
+              srcaddr:
+                - name: "example_overwrite_address"
+              dstaddr:
+                - name: "all"
+              service:
+                - name: "ALL"
+              schedule: "always"
+              logtraffic: "all"
+      register: firewall_policy
+    
     - name: debug ipv4 policy 
       debug: 
         msg: "{{ firewall_policy }}"

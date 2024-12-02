@@ -31,7 +31,7 @@
 
     - name: Add source address
       fortinet.fortios.fortios_firewall_address:
-        access_token: "{{ token_fortigate }}"
+        access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww"
         vdom: "root"
         state: "present"
         firewall_address:

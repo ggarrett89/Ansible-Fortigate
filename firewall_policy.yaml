@@ -39,6 +39,7 @@
           subnet: "192.168.1.0/24"  # IPv4 subnet in CIDR notation
           comment: "Example IPv4 address"  # Optional description
       delegate_to: fortigate
+      ignore_errors: true
 
     # - name: ping fortigate
     #   command: ping -c 4 192.168.0.120
@@ -106,7 +107,7 @@
           state: "present"
           access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww"
           firewall_policy:
-              policyid: 0
+              policyid: "0"
               name: "Test Policy"
               action: "accept"
               srcintf:
@@ -123,6 +124,7 @@
               logtraffic: "all"
       register: firewall_policy
       delegate_to: fortigate
+      ignore_errors: true
 
     - name: Configure IPv4/IPv6 policies test overwrite.
       fortinet.fortios.fortios_firewall_policy:
@@ -147,6 +149,7 @@
               logtraffic: "all"
       register: firewall_policy
       delegate_to: fortigate
+      ignore_errors: true
     
     - name: debug ipv4 policy 
       debug: 
@@ -164,6 +167,7 @@
           udp_portrange: "8080-8081"
           comment: "Custom service for specific port ranges"
       delegate_to: fortigate
+      ignore_errors: true
 
     # - name: Get all firewall policies via FortiGate REST API
     #   uri:

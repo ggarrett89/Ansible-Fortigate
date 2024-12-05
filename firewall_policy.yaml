@@ -31,7 +31,8 @@
 
     - name: Add source address
       fortinet.fortios.fortios_firewall_address:
-        access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww"
+        access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww" 
+        state: "present"
         firewall_address:
           name: "example_address"  # Name of the address object
           type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
@@ -145,6 +146,7 @@
               schedule: "always"
               logtraffic: "all"
       register: firewall_policy
+      delegate_to: fortigate
     
     - name: debug ipv4 policy 
       debug: 

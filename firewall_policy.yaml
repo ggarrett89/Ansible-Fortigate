@@ -162,7 +162,7 @@
         state: "present"
         firewall_service_custom:
           name: "example_custom_svc"
-          protocol: "TCP/UDP/SCTP"
+          protocol: "TCP/UDP/UDP-Lite/SCTP"
           tcp_portrange: "8080-8081"
           udp_portrange: "8080-8081"
           comment: "Custom service for specific port ranges"

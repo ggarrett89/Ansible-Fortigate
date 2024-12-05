@@ -32,8 +32,6 @@
     - name: Add source address
       fortinet.fortios.fortios_firewall_address:
         access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww"
-        vdom: "root"
-        state: "present"
         firewall_address:
           name: "example_address"  # Name of the address object
           type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
@@ -107,7 +105,7 @@
           state: "present"
           access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww"
           firewall_policy:
-              policyid: 10
+              policyid: 0
               name: "Test Policy"
               action: "accept"
               srcintf:
@@ -122,7 +120,7 @@
                 - name: "ALL"
               schedule: "always"
               logtraffic: "all"
-      register: firewall_policy\
+      register: firewall_policy
       delegate_to: fortigate
 
     - name: Configure IPv4/IPv6 policies test overwrite.
@@ -152,38 +150,51 @@
       debug: 
         msg: "{{ firewall_policy }}"
 
-    - name: Get all firewall policies via FortiGate REST API
-      uri:
-        url: "https://172.18.144.11/api/v2/cmdb/firewall/policy"
-        method: GET
-        headers:
-          Content-Type: "application/json" 
-          # Authorization: "Bearer {{ token_fortigate }}"
-        validate_certs: no  # Set to 'yes' if you have valid certificates
-        status_code: 200
-      register: policy_response
-      ignore_errors: true
+    - name: Add custom service
+      fortinet.fortios.fortios_firewall_service_custom:
+        access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww"
+        vdom: "root"
+        state: "present"
+        firewall_service_custom:
+          name: "example_custom_svc"
+          protocol: "TCP/UDP/SCTP"
+          tcp_portrange: "8080-8081"
+          udp_portrange: "8080-8081"
+          comment: "Custom service for specific port ranges"
+      delegate_to: fortigate
 
-    - name: Authenticate with FortiGate and get session cookie
-      uri:
-        url: "https://172.18.144.11/logincheck"
-        method: POST
-        headers:
-          Content-Type: "application/x-www-form-urlencoded"
-        body: "username=admin&secretkey=admin"
-        body_format: form-urlencoded
-        validate_certs: no
-      register: login_response
+    # - name: Get all firewall policies via FortiGate REST API
+    #   uri:
+    #     url: "https://172.18.144.11/api/v2/cmdb/firewall/policy"
+    #     method: GET
+    #     headers:
+    #       Content-Type: "application/json" 
+    #       # Authorization: "Bearer {{ token_fortigate }}"
+    #     validate_certs: no  # Set to 'yes' if you have valid certificates
+    #     status_code: 200
+    #   register: policy_response
+    #   ignore_errors: true
 
-    - name: Extract session cookie
-      set_fact:
-        session_cookie: "{{ login_response.cookies['APSCOOKIE_admin'] }}"
+    # - name: Authenticate with FortiGate and get session cookie
+    #   uri:
+    #     url: "https://172.18.144.11/logincheck"
+    #     method: POST
+    #     headers:
+    #       Content-Type: "application/x-www-form-urlencoded"
+    #     body: "username=admin&secretkey=admin"
+    #     body_format: form-urlencoded
+    #     validate_certs: no
+    #   register: login_response
+
+    # - name: Extract session cookie
+    #   set_fact:
+    #     session_cookie: "{{ login_response.cookies['APSCOOKIE_admin'] }}"
 
 
-    - name: Display the policies retrieved from FortiGate
-      debug:
-        var: policy_response.json
-      ignore_errors: true
+    # - name: Display the policies retrieved from FortiGate
+    #   debug:
+    #     var: policy_response.json
+    #   ignore_errors: true
 
     # - name: Configure IPv4/IPv6 policies.
     #   fortinet.fortios.fortios_firewall_policy:

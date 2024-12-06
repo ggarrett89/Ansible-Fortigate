@@ -1,111 +1,39 @@
 ---
 - name: configure fortigate
-  hosts: localhost
+  hosts: fortigate
   gather_facts: no
   collections:
     - fortinet.fortios
-  # vars:
-    # ansible_host: "192.168.1.1" # IP or Hostname of the FortiGate
-    # ansible_user: "admin"       # Username for the FortiGate
-    # ansible_password: "password" # Password for the FortiGate
-    # ansible_httpapi_use_ssl: yes
-    # ansible_httpapi_validate_certs: no
-    # ansible_network_os: fortinet.fortios.fortios
-
-
-    # fortigate_host: "{{ survey_fortigate_host }}" # User-provided in Tower Survey
-    # fortigate_user: "{{ survey_fortigate_user }}" # User-provided in Tower Survey
-    # fortigate_pass: "{{ survey_fortigate_pass }}" # User-provided in Tower Survey
-    # src_address_name: "Source_Address"
-    # dst_address_name: "Destination_Address"
-    # custom_service_name: "Custom_TCP_Service"
-    # policy_name: "Allow_Custom_Service"
-    # tcp_ports: "8080-8081"
-    # udp_ports: ""
-    # src_subnet: "192.168.10.0/24"
-    # dst_subnet: "10.0.1.0/24"
-    # src_interface: "port1"
-    # dst_interface: "port2"- name: Configure FortiGate policy
+  vars:
+    access_token: "GbkpGb53Gbd4Qrn1z7w8rg08t46csn" # token to execute config in Fortigate API
+    ansible_user: "admin"       # Username for the FortiGate
+    ansible_password: "admin" # Password for the FortiGate
+    ansible_connection: httpapi # Variable to connect to API
+    ansible_httpapi_use_ssl: True # Variable to use certs
+    ansible_httpapi_validate_certs: False # Variable to ignore validate certs
+    ansible_network_os: fortinet.fortios.fortios 
+    subnet: "192.168.1.0/24" # subnet to create address
 
   tasks:
 
+################### Create new address to use in policy ####################
     - name: Add source address
       fortinet.fortios.fortios_firewall_address:
-        access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww" 
+        access_token: "{{ access_token }}"
         state: "present"
         firewall_address:
           name: "example_address"  # Name of the address object
           type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
-          subnet: "192.168.1.0/24"  # IPv4 subnet in CIDR notation
+          subnet: "{{ subnet }}"  # IPv4 subnet in CIDR notation
           comment: "Example IPv4 address"  # Optional description
-      delegate_to: fortigate
       ignore_errors: true
 
-    # - name: ping fortigate
-    #   command: ping -c 4 192.168.0.120
-    #   delegate_to: localhost
-    # - name: Add source address
-    #   fortinet.fortios.fortios_firewall_address:
-    #     access_token: "{{ token_fortigate }}"
-    #     vdom: "root"
-    #     state: "absent"
-    #     firewall_address:
-    #       name: "example_address"  # Name of the address object
-    #       type: "ipmask"  # Address type (e.g., "ipmask" for subnet)
-    #       subnet: "192.168.1.0/24"  # IPv4 subnet in CIDR notation
-    #       comment: "Example IPv4 address"  # Optional description
-
-    # - name: Make API request to FortiGate
-    #   ansible.builtin.uri:
-    #     url: "https://192.168.0.120/api/v2/cmdb/firewall/address/example_address"
-    #     method: GET
-    #     headers:
-    #       Authorization: "Bearer {{ token_fortigate }}"
-    #     validate_certs: no
-    #   register: api_response
-    #   ignore_errors: true
-
-    # - name: Debug API response
-    #   ansible.builtin.debug:
-    #     var: api_response.json
-
-    # - name: Login to FortiGate to get session cookie
-    #   ansible.builtin.uri:
-    #     url: "https://192.168.0.120/logincheck"
-    #     method: POST
-    #     body: "username=admin&secretkey=admin"
-    #     # force_basic_auth: true
-    #     # user: admin
-    #     # password: admin
-    #     follow_redirects: all
-    #     return_content: yes
-    #     validate_certs: no
-    #   register: login_response
-
-    # - name: Extract session cookie
-    #   set_fact:
-    #     session_cookie: "{{ login_response.cookies }}"
-
-    # - name: Make authenticated API request using session cookie
-    #   ansible.builtin.uri:
-    #     url: "https://192.168.0.120/api/v2/cmdb/firewall/address/"
-    #     method: GET
-    #     headers:
-    #       Cookie: "{{ session_cookie }}"
-    #     validate_certs: no
-    #     return_content: yes
-    #   register: api_response_user
-
-    # - name: Debug API response
-    #   ansible.builtin.debug:
-    #     var: api_response_user.json
-
-
-    - name: Configure IPv4/IPv6 policies.
+################### Create policy with ALLOW ALL to test communication #############
+    - name: Configure IPv4/IPv6 policy Allow to test.
       fortinet.fortios.fortios_firewall_policy:
           vdom: "root"
           state: "present"
-          access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww"
+          access_token: "{{ access_token }}"
           firewall_policy:
               policyid: "0"
               name: "Test Policy"
@@ -122,15 +50,19 @@
                 - name: "ALL"
               schedule: "always"
               logtraffic: "all"
-      register: firewall_policy
-      delegate_to: fortigate
+      register: firewall_policy_1
       ignore_errors: true
 
-    - name: Configure IPv4/IPv6 policies test overwrite.
+    - name: debug ipv4 policy 
+      debug: 
+        msg: "{{ firewall_policy_1 }}"
+
+###################### Create a policy to allow just ICMP ######################
+    - name: Configure IPv4/IPv6 policy to Allow ICMP
       fortinet.fortios.fortios_firewall_policy:
           vdom: "root"
           state: "present"
-          access_token: "{{ token_fortigate }}"
+          access_token: "{{ aaccess_token }}"
           firewall_policy:
               policyid: 10
               name: "Test Policy Overwrite"
@@ -140,24 +72,24 @@
               dstintf:
                 - name: "port2"
               srcaddr:
-                - name: "example_address"
+                - name: "example_address_2"
               dstaddr:
                 - name: "all"
               service:
-                - name: "ALL"
+                - name: "ALL_ICMP"
               schedule: "always"
               logtraffic: "all"
-      register: firewall_policy
-      delegate_to: fortigate
+      register: firewall_policy_2
       ignore_errors: true
     
     - name: debug ipv4 policy 
       debug: 
-        msg: "{{ firewall_policy }}"
+        msg: "{{ firewall_policy_2 }}"
 
+################ Create custom service to add new service to use in policy #########
     - name: Add custom service
       fortinet.fortios.fortios_firewall_service_custom:
-        access_token: "rxpHrf6mN653Gn6gtf11m09jbp4Qww"
+        access_token: "{{ access_token }}"
         vdom: "root"
         state: "present"
         firewall_service_custom:
@@ -169,114 +101,3 @@
       delegate_to: fortigate
       ignore_errors: true
 
-    # - name: Get all firewall policies via FortiGate REST API
-    #   uri:
-    #     url: "https://172.18.144.11/api/v2/cmdb/firewall/policy"
-    #     method: GET
-    #     headers:
-    #       Content-Type: "application/json" 
-    #       # Authorization: "Bearer {{ token_fortigate }}"
-    #     validate_certs: no  # Set to 'yes' if you have valid certificates
-    #     status_code: 200
-    #   register: policy_response
-    #   ignore_errors: true
-
-    # - name: Authenticate with FortiGate and get session cookie
-    #   uri:
-    #     url: "https://172.18.144.11/logincheck"
-    #     method: POST
-    #     headers:
-    #       Content-Type: "application/x-www-form-urlencoded"
-    #     body: "username=admin&secretkey=admin"
-    #     body_format: form-urlencoded
-    #     validate_certs: no
-    #   register: login_response
-
-    # - name: Extract session cookie
-    #   set_fact:
-    #     session_cookie: "{{ login_response.cookies['APSCOOKIE_admin'] }}"
-
-
-    # - name: Display the policies retrieved from FortiGate
-    #   debug:
-    #     var: policy_response.json
-    #   ignore_errors: true
-
-    # - name: Configure IPv4/IPv6 policies.
-    #   fortinet.fortios.fortios_firewall_policy:
-    #       vdom: "root"
-    #       state: "present"
-    #       access_token: "{{ token_fortigate }}"
-    #       firewall_policy:
-    #           policyid: 3
-    #           name: "Policy_no_add"
-    #           action: "accept"
-    #           srcintf:
-    #             - name: "port1"
-    #           dstintf:
-    #             - name: "port2"
-    #           srcaddr:
-    #             - name: "192.168.100.1"
-    #           dstaddr:
-    #             - name: "all"
-    #           service:
-    #             - name: "ALL"
-    #           schedule: "always"
-    #           logtraffic: "all"
-    #   ignore_errors: true
-
-  # tasks:
-  #   - name: Add source address
-  #     fortinet.fortios.fortios_firewall_address:
-  #       host: "{{ fortigate_host }}"
-  #       access_token: "{{ token_fortigate }}"
-  #       vdom: "root"
-  #       state: "present"
-  #       firewall_address:
-  #         name: "{{ src_address_name }}"
-  #         subnet: "{{ src_subnet }}"
-    
-  #   - name: Add destination address
-  #     fortinet.fortios.fortios_firewall_address:
-  #       host: "{{ fortigate_host }}"
-  #       access_token: "{{ token_fortigate }}"
-  #       vdom: "root"
-  #       state: "present"
-  #       firewall_address:
-  #         name: "{{ dst_address_name }}"
-  #         subnet: "{{ dst_subnet }}"
-    
-  #   - name: Add custom service
-  #     fortinet.fortios.fortios_firewall_service_custom:
-  #       host: "{{ fortigate_host }}"
-  #       access_token: "{{ token_fortigate }}"
-  #       vdom: "root"
-  #       state: "present"
-  #       firewall_service_custom:
-  #         name: "{{ custom_service_name }}"
-  #         protocol: "TCP/UDP/SCTP"
-  #         tcp_portrange: "{{ tcp_ports }}"
-  #         udp_portrange: "{{ udp_ports }}"
-  #         comment: "Custom service for specific port ranges"
-    
-  #   - name: Create firewall policy
-  #     fortinet.fortios.fortios_firewall_policy:
-  #       host: "{{ fortigate_host }}"
-  #       access_token: "{{ token_fortigate }}"
-  #       vdom: "root"
-  #       state: "present"
-  #       firewall_policy:
-  #         name: "{{ policy_name }}"
-  #         srcintf:
-  #           - "{{ src_interface }}"
-  #         dstintf:
-  #           - "{{ dst_interface }}"
-  #         srcaddr:
-  #           - "{{ src_address_name }}"
-  #         dstaddr:
-  #           - "{{ dst_address_name }}"
-  #         service:
-  #           - "{{ custom_service_name }}"
-  #         action: "accept"
-  #         schedule: "always"
-  #         logtraffic: "all"

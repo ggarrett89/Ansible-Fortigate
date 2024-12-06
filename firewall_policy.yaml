@@ -62,7 +62,7 @@
       fortinet.fortios.fortios_firewall_policy:
           vdom: "root"
           state: "present"
-          access_token: "{{ aaccess_token }}"
+          access_token: "{{ access_token }}"
           firewall_policy:
               policyid: 10
               name: "Test Policy Overwrite"

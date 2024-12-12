@@ -1,20 +1,29 @@
 ---
 - name: configure fortigate
-  hosts: fortigate
+  hosts: localhost
   gather_facts: no
   collections:
     - fortinet.fortios
-  vars:
-    access_token: "GbkpGb53Gbd4Qrn1z7w8rg08t46csn" # token to execute config in Fortigate API
-    ansible_user: "admin"       # Username for the FortiGate
-    ansible_password: "admin" # Password for the FortiGate
-    ansible_connection: httpapi # Variable to connect to API
-    ansible_httpapi_use_ssl: True # Variable to use certs
-    ansible_httpapi_validate_certs: False # Variable to ignore validate certs
-    ansible_network_os: fortinet.fortios.fortios 
-    subnet: "192.168.1.0/24" # subnet to create address
+  # vars:
+  #   access_token: "GbkpGb53Gbd4Qrn1z7w8rg08t46csn" # token to execute config in Fortigate API
+  #   ansible_user: "admin"       # Username for the FortiGate
+  #   ansible_password: "admin" # Password for the FortiGate
+  #   ansible_connection: httpapi # Variable to connect to API
+  #   ansible_httpapi_use_ssl: True # Variable to use certs
+  #   ansible_httpapi_validate_certs: False # Variable to ignore validate certs
+  #   ansible_network_os: fortinet.fortios.fortios 
+  #   subnet: "192.168.1.0/24" # subnet to create address
 
   tasks:
+
+    - name: test ssh
+      shell: echo "test ssh access"
+      delegate_to: fortigate
+      ignore_errors: true
+      vars:
+        ansible_user: "{{fortigate_user}}"
+        ansible_password: "{{fortigate_password}}"
+      tags: test_ssh
 
 ################### Create new address to use in policy ####################
     - name: Add source address

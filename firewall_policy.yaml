@@ -1,6 +1,6 @@
 ---
-- name: configure fortigate
-  hosts: localhost
+# - name: configure fortigate
+- hosts: localhost
   gather_facts: no
   collections:
     - fortinet.fortios
@@ -17,7 +17,7 @@
   tasks:
 
     - name: test ssh
-      shell: echo "test ssh access"
+      shell: show config
       delegate_to: fortigate
       ignore_errors: true
       vars:

@@ -20,9 +20,9 @@
       shell: show 
       delegate_to: fortigate
       ignore_errors: true
-      vars:
-        ansible_user: "{{fortigate_user}}"
-        ansible_password: "{{fortigate_password}}"
+      # vars:
+      #   ansible_user: "{{fortigate_user}}"
+      #   ansible_password: "{{fortigate_password}}"
       tags: test_ssh
 
 ################### Create new address to use in policy ####################

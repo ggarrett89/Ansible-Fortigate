@@ -1,6 +1,6 @@
 ---
 # - name: configure fortigate
-- hosts: 172.31.164.17
+- hosts: localhost
   gather_facts: no
   collections:
     - fortinet.fortios

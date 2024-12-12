@@ -9,10 +9,14 @@
     jump_user: jump_user      # Jump host username
     fortigate_ip: 172.31.160.11 # FortiGate IP address
     fortigate_user: admin     # FortiGate username
-    fortigate_password: "{{ fortigate_password }}" # FortiGate password
+    # fortigate_password: "{{ fortigate_password }}" # FortiGate password
     ansible_ssh_common_args: >
       -o ProxyJump={{ jump_user }}@{{ jump_host }}
       -o ControlMaster=no
+    ansible_user: admin
+    ansible_password: "{{ fortigate_password }}"
+    ansible_port: 22
+      
   # -o Ciphers=aes256-gcm@openssh.com
   # vars:
   #   access_token: "GbkpGb53Gbd4Qrn1z7w8rg08t46csn" # token to execute config in Fortigate API

@@ -1,6 +1,6 @@
 ---
 # - name: configure fortigate
-- hosts: 172.31.164.17
+- hosts: localhost
   gather_facts: no
   collections:
     - fortinet.fortios
@@ -27,7 +27,7 @@
   tasks:
 
     - name: Test SSH connection to FortiGate via Jump Host
-      ansible.builtin.raw: "show"
+      ansible.builtin.shell: show
       vars:
         ansible_host: "{{ fortigate_ip }}"
         ansible_user: "{{ fortigate_user }}"

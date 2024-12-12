@@ -35,6 +35,7 @@
         ansible_port: 22
       register: ssh_test_output
       ignore_errors: true
+      delegate_to: fortigate
 
     - name: Debug SSH connection output
       debug:

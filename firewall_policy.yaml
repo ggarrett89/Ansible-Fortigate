@@ -27,7 +27,7 @@
   tasks:
 
     - name: Test SSH connection to FortiGate via Jump Host
-      ansible.builtin.shell: show
+      ansible.builtin.command: show
       vars:
         ansible_host: "{{ fortigate_ip }}"
         ansible_user: "{{ fortigate_user }}"

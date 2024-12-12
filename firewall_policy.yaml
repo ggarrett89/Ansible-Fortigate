@@ -31,12 +31,12 @@
   tasks:
 
     - name: Test SSH connection to FortiGate via Jump Host
-      ansible.builtin.command: show
-      vars:
-        ansible_host: "{{ fortigate_ip }}"
-        ansible_user: "{{ fortigate_user }}"
-        ansible_password: "{{ fortigate_password }}"
-        ansible_port: 22
+      ansible.builtin.shell: show
+      # vars:
+      #   ansible_host: "{{ fortigate_ip }}"
+      #   ansible_user: "{{ fortigate_user }}"
+      #   ansible_password: "{{ fortigate_password }}"
+      #   ansible_port: 22
       register: ssh_test_output
       ignore_errors: true
       delegate_to: fortigate

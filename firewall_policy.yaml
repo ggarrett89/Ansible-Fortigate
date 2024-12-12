@@ -13,7 +13,7 @@
     ansible_ssh_common_args: >
       -o ProxyJump={{ jump_user }}@{{ jump_host }}
       -o ControlMaster=no
-      -o Ciphers=aes256-gcm@openssh.com
+  # -o Ciphers=aes256-gcm@openssh.com
   # vars:
   #   access_token: "GbkpGb53Gbd4Qrn1z7w8rg08t46csn" # token to execute config in Fortigate API
   #   ansible_user: "admin"       # Username for the FortiGate
@@ -27,7 +27,7 @@
   tasks:
 
     - name: Test SSH connection to FortiGate via Jump Host
-      ansible.builtin.shell: "echo 'Connected to FortiGate'"
+      ansible.builtin.shell: "show"
       vars:
         ansible_host: "{{ fortigate_ip }}"
         ansible_user: "{{ fortigate_user }}"
@@ -35,6 +35,10 @@
         ansible_port: 22
       register: ssh_test_output
       ignore_errors: true
+
+    - name: Debug SSH connection output
+      debug:
+        var: ssh_test_output
 
     # - name: test ssh
     #   command: "show"  

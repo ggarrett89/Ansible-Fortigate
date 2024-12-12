@@ -17,12 +17,13 @@
   tasks:
 
     - name: test ssh
-      ping:  
+      command: show  
       delegate_to: fortigate
       ignore_errors: true
       vars:
         ansible_user: "{{fortigate_user}}"
         ansible_password: "{{fortigate_password}}"
+        ansible_ssh_common_args: "-o ControlMaster=no -vvv -o Ciphers=aes256"
       tags: test_ssh
 
 ################### Create new address to use in policy ####################

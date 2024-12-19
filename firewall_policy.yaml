@@ -42,7 +42,7 @@
           subnet: "{{ subnet }}"  # IPv4 subnet in CIDR notation
           comment: "Example IPv4 address"  # Optional description
       ignore_errors: true
-      delegate_to: fortigate
+      delegate_to: Fortigate_group
 
 ################### Create policy with ALLOW ALL to test communication #############
     - name: Configure IPv4/IPv6 policy Allow to test.
@@ -68,7 +68,7 @@
               logtraffic: "all"
       register: firewall_policy_1
       ignore_errors: true
-      delegate_to: fortigate
+      delegate_to: Fortigate_group
 
     - name: debug ipv4 policy 
       debug: 
@@ -98,7 +98,7 @@
               logtraffic: "all"
       register: firewall_policy_2
       ignore_errors: true
-      delegate_to: fortigate
+      delegate_to: Fortigate_group
     
     - name: debug ipv4 policy 
       debug: 
@@ -116,6 +116,6 @@
           tcp_portrange: "8080-8081"
           udp_portrange: "8080-8081"
           comment: "Custom service for specific port ranges"
-      delegate_to: fortigate
+      delegate_to: Fortigate_group
       ignore_errors: true
 

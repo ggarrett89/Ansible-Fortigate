@@ -7,18 +7,13 @@
   vars:
     fortigate_user: admin     # FortiGate username
     fortigate_password: "{{ fortigate_password }}" # FortiGate password
-
+    firewall_policy_1: "{{ firewall_policy_1 }}"
+    firewall_policy_2: "{{ firewall_policy_2 }}"
       
   # -o Ciphers=aes256-gcm@openssh.com
   # vars:
-  #   access_token: "GbkpGb53Gbd4Qrn1z7w8rg08t46csn" # token to execute config in Fortigate API
-  #   ansible_user: "admin"       # Username for the FortiGate
-  #   ansible_password: "admin" # Password for the FortiGate
-  #   ansible_connection: httpapi # Variable to connect to API
-  #   ansible_httpapi_use_ssl: True # Variable to use certs
-  #   ansible_httpapi_validate_certs: False # Variable to ignore validate certs
-  #   ansible_network_os: fortinet.fortios.fortios 
-  #   subnet: "192.168.1.0/24" # subnet to create address
+    access_token: "GbkpGb53Gbd4Qrn1z7w8rg08t46csn" # token to execute config in Fortigate API
+    subnet: "192.168.1.0/24" # subnet to create address
 
   tasks:
 
@@ -39,7 +34,7 @@
 ################### Create new address to use in policy ####################
     - name: Add source address
       fortinet.fortios.fortios_firewall_address:
-        access_token: "{{ access_token }}"
+        access_token: "{{ token_fortigate }}"
         state: "present"
         firewall_address:
           name: "example_address"  # Name of the address object
@@ -82,7 +77,7 @@
       fortinet.fortios.fortios_firewall_policy:
           vdom: "root"
           state: "present"
-          access_token: "{{ access_token }}"
+          access_token: "{{ token_fortigate }}"
           firewall_policy:
               policyid: 10
               name: "Test Policy Overwrite"
@@ -109,7 +104,7 @@
 ################ Create custom service to add new service to use in policy #########
     - name: Add custom service
       fortinet.fortios.fortios_firewall_service_custom:
-        access_token: "{{ access_token }}"
+        access_token: "{{ token_fortigate }}"
         vdom: "root"
         state: "present"
         firewall_service_custom:

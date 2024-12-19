@@ -22,9 +22,9 @@
 
   tasks:
 
-    - name: Debug SSH connection output
-      debug:
-        var: ssh_test_output
+    # - name: Debug SSH connection output
+    #   debug:
+    #     var: ssh_test_output
 
     # - name: test ssh
     #   command: "show"  
